@@ -750,6 +750,229 @@ function setupSmoothScrolling() {
 }
 
 // ============================================
+// Project Modal
+// ============================================
+
+class ProjectModal {
+  constructor() {
+    this.modal = document.getElementById('projectModal');
+    this.modalOverlay = this.modal?.querySelector('.project-modal__overlay');
+    this.modalContainer = this.modal?.querySelector('.project-modal__container');
+    this.closeButtons = this.modal?.querySelectorAll('[data-modal-close]');
+    this.clickableProjects = document.querySelectorAll('.timeline__item--clickable[data-project]');
+
+    // Modal content elements
+    this.modalLogo = document.getElementById('modalLogo');
+    this.modalTitle = document.getElementById('modalTitle');
+    this.modalSubtitle = document.getElementById('modalSubtitle');
+    this.modalDescription = document.getElementById('modalDescription');
+    this.modalHighlights = document.getElementById('modalHighlights');
+    this.modalStats = document.getElementById('modalStats');
+    this.modalCTA = document.getElementById('modalCTA');
+    this.modalCTAText = document.getElementById('modalCTAText');
+    this.modalCTATop = document.getElementById('modalCTATop');
+    this.modalCTATextTop = document.getElementById('modalCTATextTop');
+
+    // Project data
+    this.projectData = {
+      'language-space': {
+        logo: 'assets/ls_logo.png',
+        title: 'Language Space',
+        subtitle: 'Discord Community for Language Learners',
+        description: 'Language Space is a vibrant Discord community dedicated to bringing people together from around the world to learn languages, share cultures, and build meaningful connections. As one of the founding moderators and community builders, I help create an inclusive environment where members can practice languages through voice channels, text conversations, and organized events. Our community focuses on practical language learning combined with genuine cultural exchange, making the learning process both effective and enjoyable.',
+        highlights: [
+          'Co-founded and manage a community of 300+ active language learners',
+          'Organize voice chat sessions, language exchanges, and cultural events (also cooking sessions!)',
+          'Collaborate with international moderators to maintain an inclusive environment'
+        ],
+        stats: [
+          { value: '300+', label: 'Active Members' },
+          { value: '50+', label: 'Languages' },
+        ],
+        ctaText: 'Join the Community',
+        ctaUrl: 'https://discord.com/invite/DfQESyV26V'
+      },
+      'eutimiamo': {
+        logo: 'assets/eutimiamo_logo.png',
+        title: 'Eutimiamo',
+        subtitle: 'Psychology Education & Documentary Content',
+        description: 'Eutimiamo started as a passion project to make psychology accessible and engaging for Italian-speaking audiences. What began as an Instagram page sharing psychology facts evolved into a full-fledged YouTube channel producing high-quality documentary-style videos. I handle the complete production pipeline: from researching complex psychological concepts and writing scripts, to editing compelling videos in Premiere Pro and designing eye-catching thumbnails in Photoshop. The channel focuses on deep dives into psychological phenomena, mental health topics, and fascinating aspects of human behavior, presented in an educational yet entertaining format.',
+        highlights: [
+          'Built an audience of 26K+ YouTube subscribers and 28K+ Instagram followers',
+          'Produced 144+ documentary-style videos on psychology topics',
+          'Complete production workflow: research, scripting, editing in Premiere Pro, and thumbnail design in Photoshop'
+        ],
+        stats: [
+          { value: '26K+', label: 'YouTube Subs' },
+          { value: '28K+', label: 'Instagram Followers' },
+          { value: '34.9M+', label: 'Cross-platform Views' },
+          { value: '144+', label: 'Videos Published' }
+        ],
+        ctaText: 'View the Channel',
+        ctaUrl: 'https://www.youtube.com/@eutimiamo'
+      }
+    };
+
+    this.init();
+  }
+
+  init() {
+    if (!this.modal) return;
+
+    // Add click listeners to clickable project cards
+    this.clickableProjects.forEach(card => {
+      card.addEventListener('click', (e) => {
+        // Prevent opening modal if clicking on links inside the card
+        if (e.target.tagName === 'A' || e.target.closest('a')) return;
+
+        const projectId = card.dataset.project;
+        this.openModal(projectId);
+      });
+
+      // Add keyboard support
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('role', 'button');
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          const projectId = card.dataset.project;
+          this.openModal(projectId);
+        }
+      });
+    });
+
+    // Close button listeners
+    this.closeButtons.forEach(button => {
+      button.addEventListener('click', () => this.closeModal());
+    });
+
+    // Close on ESC key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && this.modal.classList.contains('is-open')) {
+        this.closeModal();
+      }
+    });
+
+    // Close when clicking outside modal content
+    this.modal.addEventListener('click', (e) => {
+      if (e.target === this.modal || e.target === this.modalOverlay) {
+        this.closeModal();
+      }
+    });
+
+    // Prevent closing when clicking inside modal content
+    this.modalContainer.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+  }
+
+  openModal(projectId) {
+    const project = this.projectData[projectId];
+    if (!project) return;
+
+    // Populate modal content
+    this.modalLogo.src = project.logo;
+    this.modalLogo.alt = `${project.title} Logo`;
+    this.modalTitle.textContent = project.title;
+    this.modalSubtitle.textContent = project.subtitle;
+    this.modalDescription.textContent = project.description;
+
+    // Populate highlights
+    this.modalHighlights.innerHTML = '';
+    project.highlights.forEach(highlight => {
+      const li = document.createElement('li');
+      li.textContent = highlight;
+      this.modalHighlights.appendChild(li);
+    });
+
+    // Populate stats
+    this.modalStats.innerHTML = '';
+    project.stats.forEach(stat => {
+      const statDiv = document.createElement('div');
+      statDiv.className = 'project-modal__stat';
+      statDiv.innerHTML = `
+        <span class="project-modal__stat-value">${stat.value}</span>
+        <span class="project-modal__stat-label">${stat.label}</span>
+      `;
+      this.modalStats.appendChild(statDiv);
+    });
+
+    // Set CTA buttons (both top and bottom)
+    this.modalCTAText.textContent = project.ctaText;
+    this.modalCTA.href = project.ctaUrl;
+    this.modalCTATextTop.textContent = project.ctaText;
+    this.modalCTATop.href = project.ctaUrl;
+
+    // Lock body scroll - simple approach
+    document.body.classList.add('modal-open');
+
+    // Show modal
+    this.modal.classList.add('is-open');
+    this.modal.setAttribute('aria-hidden', 'false');
+
+    // Reset scroll position of modal
+    this.modalContainer.scrollTop = 0;
+
+    // Focus management for accessibility
+    setTimeout(() => {
+      const closeButton = this.modal.querySelector('.project-modal__close');
+      if (closeButton) closeButton.focus();
+    }, 100);
+
+    // Trap focus within modal
+    this.trapFocus();
+  }
+
+  closeModal() {
+    this.modal.classList.remove('is-open');
+    this.modal.setAttribute('aria-hidden', 'true');
+
+    // Unlock body scroll - simple approach
+    document.body.classList.remove('modal-open');
+
+    // Return focus to the card that opened the modal
+    const openCard = document.querySelector('.timeline__item--clickable[data-project]:focus');
+    if (openCard) {
+      openCard.focus();
+    }
+  }
+
+  trapFocus() {
+    const focusableElements = this.modal.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+
+    const handleTabKey = (e) => {
+      if (!this.modal.classList.contains('is-open')) {
+        document.removeEventListener('keydown', handleTabKey);
+        return;
+      }
+
+      if (e.key === 'Tab') {
+        if (e.shiftKey) {
+          // Shift + Tab
+          if (document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement.focus();
+          }
+        } else {
+          // Tab
+          if (document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement.focus();
+          }
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleTabKey);
+  }
+}
+
+// ============================================
 // Initialize Everything
 // ============================================
 
@@ -767,6 +990,7 @@ document.addEventListener('DOMContentLoaded', () => {
   new BackToTop();
   new LazyLoader();
   new AccessibilityEnhancements();
+  new ProjectModal();
 
   // Setup smooth scrolling for all anchor links (hero buttons, etc.)
   setupSmoothScrolling();
