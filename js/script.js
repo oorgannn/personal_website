@@ -556,7 +556,7 @@ class LazyLoader {
 }
 
 // ============================================
-// Stat Sources - Three Different Approaches
+// Stat Sources - Different Behavior for Mobile/Desktop
 // ============================================
 
 class StatSources {
@@ -566,29 +566,74 @@ class StatSources {
     this.expandBtns = document.querySelectorAll('.stat-card__expand-btn');
     this.expandDetails = document.querySelectorAll('.stat-card__details');
     this.isExpanded = false;
+    this.mobileBreakpoint = 768;
     this.init();
   }
 
   init() {
     this.setupExpandables();
+    // Listen for window resize to potentially reset state
+    window.addEventListener('resize', debounce(() => {
+      this.handleResize();
+    }, 200));
   }
 
-  // Setup all expandable stat cards to work together
-  setupExpandables() {
-    this.expandBtns.forEach(btn => {
-      // Click event - toggle all
-      btn.addEventListener('click', () => {
-        this.toggleAllExpandables();
-      });
+  handleResize() {
+    // Reset all states when switching between mobile and desktop
+    if (this.isMobile()) {
+      // Close all when switching to mobile
+      this.closeAllExpandables();
+    } else {
+      // Reset desktop state
+      this.isExpanded = false;
+      this.closeAllExpandables();
+    }
+  }
 
-      // Keyboard interaction - toggle all
-      btn.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
+  isMobile() {
+    return window.innerWidth <= this.mobileBreakpoint;
+  }
+
+  // Setup all expandable stat cards
+  setupExpandables() {
+    this.expandBtns.forEach((btn, index) => {
+      // Click event
+      btn.addEventListener('click', () => {
+        if (this.isMobile()) {
+          // Mobile: toggle only this card
+          this.toggleSingleExpandable(index);
+        } else {
+          // Desktop: toggle all cards
           this.toggleAllExpandables();
         }
       });
+
+      // Keyboard interaction
+      btn.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          if (this.isMobile()) {
+            this.toggleSingleExpandable(index);
+          } else {
+            this.toggleAllExpandables();
+          }
+        }
+      });
     });
+  }
+
+  toggleSingleExpandable(index) {
+    const btn = this.expandBtns[index];
+    const details = this.expandDetails[index];
+    const isExpanded = details.classList.contains('is-expanded');
+
+    // Toggle this specific card
+    btn.setAttribute('aria-expanded', !isExpanded);
+    if (isExpanded) {
+      details.classList.remove('is-expanded');
+    } else {
+      details.classList.add('is-expanded');
+    }
   }
 
   toggleAllExpandables() {
@@ -606,6 +651,18 @@ class StatSources {
       } else {
         details.classList.remove('is-expanded');
       }
+    });
+  }
+
+  closeAllExpandables() {
+    // Update all buttons
+    this.expandBtns.forEach(btn => {
+      btn.setAttribute('aria-expanded', false);
+    });
+
+    // Update all details sections
+    this.expandDetails.forEach(details => {
+      details.classList.remove('is-expanded');
     });
   }
 }
