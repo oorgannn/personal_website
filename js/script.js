@@ -799,7 +799,6 @@ class ProjectModal {
         description: 'Eutimiamo started as a passion project to make psychology accessible and engaging for Italian-speaking audiences. What began as an Instagram page sharing psychology facts evolved into a full-fledged YouTube channel producing high-quality documentary-style videos. I handle the complete production pipeline: from researching complex psychological concepts and writing scripts, to editing compelling videos in Premiere Pro and designing eye-catching thumbnails in Photoshop. The channel focuses on deep dives into psychological phenomena, mental health topics, and fascinating aspects of human behavior, presented in an educational yet entertaining format.',
         highlights: [
           'Built an audience of 26K+ YouTube subscribers and 28K+ Instagram followers',
-          'Produced 144+ documentary-style videos on psychology topics',
           'Complete production workflow: research, scripting, editing in Premiere Pro, and thumbnail design in Photoshop'
         ],
         stats: [
