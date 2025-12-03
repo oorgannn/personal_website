@@ -1620,6 +1620,15 @@ body.dark-mode .theme-toggle .moon-icon {
   }
 
   /* Hero */
+  .hero {
+    min-height: 100vh;
+    padding-top: 60px;
+  }
+
+  .hero__content {
+    padding: var(--space-lg) 0;
+  }
+
   .hero__cta {
     flex-direction: column;
     width: 100%;
@@ -1642,6 +1651,17 @@ body.dark-mode .theme-toggle .moon-icon {
 
   .timeline__item {
     padding-left: var(--space-lg);
+  }
+
+  /* Timeline logos on mobile - make them smaller and positioned better */
+  .timeline__logo {
+    position: relative;
+    top: auto;
+    right: auto;
+    width: 80px;
+    height: 80px;
+    float: right;
+    margin: 0 0 var(--space-sm) var(--space-md);
   }
 
   /* Back to Top */

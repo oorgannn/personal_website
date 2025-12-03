@@ -567,6 +567,7 @@ class StatSources {
     this.expandDetails = document.querySelectorAll('.stat-card__details');
     this.isExpanded = false;
     this.mobileBreakpoint = 768;
+    this.wasMobile = this.isMobile(); // Track previous state
     this.init();
   }
 
@@ -579,14 +580,16 @@ class StatSources {
   }
 
   handleResize() {
-    // Reset all states when switching between mobile and desktop
-    if (this.isMobile()) {
-      // Close all when switching to mobile
-      this.closeAllExpandables();
-    } else {
+    const isMobileNow = this.isMobile();
+
+    // Only reset if we actually switched between mobile and desktop
+    if (this.wasMobile !== isMobileNow) {
       // Reset desktop state
       this.isExpanded = false;
       this.closeAllExpandables();
+
+      // Update the previous state
+      this.wasMobile = isMobileNow;
     }
   }
 
@@ -708,6 +711,45 @@ class AccessibilityEnhancements {
 }
 
 // ============================================
+// Smooth Scroll for All Anchor Links
+// ============================================
+
+/**
+ * Handle smooth scrolling for all anchor links (like hero CTA buttons)
+ */
+function setupSmoothScrolling() {
+  // Get all anchor links that point to sections on the page
+  const anchorLinks = document.querySelectorAll('a[href^="#"]:not(.nav__link)');
+
+  anchorLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      const targetId = link.getAttribute('href');
+
+      // Skip if it's just "#" with no target
+      if (targetId === '#' || targetId === '#!') return;
+
+      const targetSection = document.querySelector(targetId);
+
+      if (targetSection) {
+        e.preventDefault();
+
+        const nav = document.getElementById('mainNav');
+        const navHeight = nav ? nav.offsetHeight : 0;
+        // Add extra offset on mobile to prevent navbar from covering content
+        const isMobile = window.innerWidth <= 768;
+        const extraOffset = isMobile ? 20 : 0;
+        const targetPosition = targetSection.offsetTop - navHeight - extraOffset;
+
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+        });
+      }
+    });
+  });
+}
+
+// ============================================
 // Initialize Everything
 // ============================================
 
@@ -725,6 +767,9 @@ document.addEventListener('DOMContentLoaded', () => {
   new BackToTop();
   new LazyLoader();
   new AccessibilityEnhancements();
+
+  // Setup smooth scrolling for all anchor links (hero buttons, etc.)
+  setupSmoothScrolling();
 
   // Add loaded class to body for CSS hooks
   document.body.classList.add('loaded');
