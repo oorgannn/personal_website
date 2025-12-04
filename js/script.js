@@ -773,42 +773,84 @@ class ProjectModal {
     this.modalCTATop = document.getElementById('modalCTATop');
     this.modalCTATextTop = document.getElementById('modalCTATextTop');
 
+    // Detect language from HTML lang attribute
+    this.currentLanguage = document.documentElement.lang || 'en';
+
     // Project data
     this.projectData = {
       'language-space': {
-        logo: 'assets/ls_logo.png',
-        title: 'Language Space',
-        subtitle: 'Discord Community for Language Learners',
-        description: 'Language Space is a vibrant Discord community dedicated to bringing people together from around the world to learn languages, share cultures, and build meaningful connections. As one of the founding moderators and community builders, I help create an inclusive environment where members can practice languages through voice channels, text conversations, and organized events. Our community focuses on practical language learning combined with genuine cultural exchange, making the learning process both effective and enjoyable.',
-        highlights: [
-          'Co-founded and manage a community of 300+ active language learners',
-          'Organize voice chat sessions, language exchanges, and cultural events (also cooking sessions!)',
-          'Collaborate with international moderators to maintain an inclusive environment'
-        ],
-        stats: [
-          { value: '300+', label: 'Active Members' },
-          { value: '50+', label: 'Languages' },
-        ],
-        ctaText: 'Join the Community',
-        ctaUrl: 'https://discord.com/invite/DfQESyV26V'
+        en: {
+          logo: 'assets/ls_logo.png',
+          title: 'Language Space',
+          subtitle: 'Discord Community for Language Learners',
+          description: 'Language Space is a Discord community dedicated to bringing people together from around the world to learn languages, share cultures, and build meaningful connections. As one of the founding moderators and community builders, I help create an inclusive environment where members can practice languages through voice channels, text conversations, and organized events. Our community focuses on practical language learning combined with genuine cultural exchange, making the learning process both effective and enjoyable.',
+          highlights: [
+            'Co-found and manage a community of 300+ active language learners.',
+            'Organize voice chat sessions, language exchanges, and cultural events (also cooking sessions!)',
+            'Collaborate with international moderators'
+          ],
+          stats: [
+            { value: '300+', label: 'Active Members' },
+            { value: '50+', label: 'Languages' },
+          ],
+          ctaText: 'Join the Community',
+          ctaUrl: 'https://discord.com/invite/DfQESyV26V'
+        },
+        it: {
+          logo: 'assets/ls_logo.png',
+          title: 'Language Space',
+          subtitle: 'Community Discord per Studenti di Lingue',
+          description: 'Language Space è una vivace community Discord dedicata a riunire persone da tutto il mondo per imparare lingue, condividere culture e costruire connessioni significative. Come uno dei moderatori fondatori e costruttori della community, aiuto a creare un ambiente inclusivo dove i membri possono praticare le lingue attraverso canali vocali, conversazioni testuali ed eventi organizzati. La nostra community si concentra sull\'apprendimento pratico delle lingue combinato con un autentico scambio culturale, rendendo il processo di apprendimento efficace e piacevole.',
+          highlights: [
+            'Co-fondatore e gestore di una community di oltre 300 studenti di lingue attivi',
+            'Organizzazione di sessioni di scambi linguistici ed eventi culturali (anche sessioni di cucina!)',
+            'Collaborazione con moderatori internazionali'
+          ],
+          stats: [
+            { value: '300+', label: 'Membri Attivi' },
+            { value: '50+', label: 'Lingue' },
+          ],
+          ctaText: 'Unisciti alla Community',
+          ctaUrl: 'https://discord.com/invite/DfQESyV26V'
+        }
       },
       'eutimiamo': {
-        logo: 'assets/eutimiamo_logo.png',
-        title: 'Eutimiamo',
-        subtitle: 'Psychology Education & Documentary Content',
-        description: 'Eutimiamo started as a passion project to make psychology accessible and engaging for Italian-speaking audiences. What began as an Instagram page sharing psychology facts evolved into a full-fledged YouTube channel producing high-quality documentary-style videos. I handle the complete production pipeline: from researching complex psychological concepts and writing scripts, to editing compelling videos in Premiere Pro and designing eye-catching thumbnails in Photoshop. The channel focuses on deep dives into psychological phenomena, mental health topics, and fascinating aspects of human behavior, presented in an educational yet entertaining format.',
-        highlights: [
-          'Built an audience of 26K+ YouTube subscribers and 28K+ Instagram followers',
-          'Complete production workflow: research, scripting, editing in Premiere Pro, and thumbnail design in Photoshop'
-        ],
-        stats: [
-          { value: '26K+', label: 'YouTube Subs' },
-          { value: '28K+', label: 'Instagram Followers' },
-          { value: '34.9M+', label: 'Cross-platform Views' },
-          { value: '144+', label: 'Videos Published' }
-        ],
-        ctaText: 'View the Channel',
-        ctaUrl: 'https://www.youtube.com/@eutimiamo'
+        en: {
+          logo: 'assets/eutimiamo_logo.png',
+          title: 'Eutimiamo',
+          subtitle: 'Psychology Education & Documentary Content',
+          description: 'Eutimiamo started as a passion project to make psychology accessible and engaging for Italian-speaking audiences. What began as an Instagram page sharing psychology facts evolved into a full-fledged YouTube channel producing high-quality documentary-style videos. I handle the complete production pipeline: from researching complex psychological concepts and writing scripts, to editing compelling videos in Premiere Pro and designing eye-catching thumbnails in Photoshop. The channel focuses on deep dives into psychological phenomena, mental health topics, and fascinating aspects of human behavior, presented in an educational yet entertaining format.',
+          highlights: [
+            'Built an audience of 26K+ YouTube subscribers and 28K+ Instagram followers',
+            'Complete production workflow: research, scripting, editing in Premiere Pro, and thumbnail design in Photoshop'
+          ],
+          stats: [
+            { value: '26K+', label: 'YouTube Subs' },
+            { value: '28K+', label: 'Instagram Followers' },
+            { value: '34.9M+', label: 'Cross-platform Views' },
+            { value: '144+', label: 'Videos Published' }
+          ],
+          ctaText: 'View the Channel',
+          ctaUrl: 'https://www.youtube.com/@eutimiamo'
+        },
+        it: {
+          logo: 'assets/eutimiamo_logo.png',
+          title: 'Eutimiamo',
+          subtitle: 'Educazione Psicologica e Contenuti Documentari',
+          description: 'Eutimiamo è nato come progetto personale per rendere la psicologia accessibile e coinvolgente per il pubblico italiano. Ciò che è iniziato come una pagina Instagram che condivideva curiosità di psicologia si è evoluto in un canale YouTube a tutti gli effetti che produce video documentari di alta qualità. Gestisco l\'intera pipeline di produzione: dalla ricerca di concetti psicologici complessi e scrittura degli script, al montaggio di video avvincenti in Premiere Pro e alla progettazione di miniature accattivanti in Photoshop. Il canale si concentra su approfondimenti di fenomeni psicologici, argomenti di salute mentale e aspetti affascinanti del comportamento umano, presentati in un formato educativo ma divertente.',
+          highlights: [
+            'Costruito un pubblico di oltre 26K iscritti YouTube e oltre 28K follower Instagram',
+            'Flusso di produzione completo: ricerca, sceneggiatura, montaggio in Premiere Pro e progettazione miniature in Photoshop'
+          ],
+          stats: [
+            { value: '26K+', label: 'Iscritti YouTube' },
+            { value: '28K+', label: 'Follower Instagram' },
+            { value: '34.9M+', label: 'Visualizzazioni Multi-piattaforma' },
+            { value: '144+', label: 'Video Pubblicati' }
+          ],
+          ctaText: 'Vedi il Canale',
+          ctaUrl: 'https://www.youtube.com/@eutimiamo'
+        }
       }
     };
 
@@ -866,8 +908,11 @@ class ProjectModal {
   }
 
   openModal(projectId) {
-    const project = this.projectData[projectId];
-    if (!project) return;
+    const projectLangData = this.projectData[projectId];
+    if (!projectLangData) return;
+
+    // Get language-specific data
+    const project = projectLangData[this.currentLanguage] || projectLangData['en'];
 
     // Populate modal content
     this.modalLogo.src = project.logo;
