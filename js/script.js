@@ -1,30 +1,5 @@
-/**
- * ============================================
- * Andrea Gravina Portfolio - JavaScript
- * ============================================
- *
- * Features:
- * - Smooth scrolling and navigation
- * - Theme customization panel
- * - Scroll animations
- * - Experience filtering
- * - Skill progress animations
- * - Contact form handling
- * - Performance optimizations
- */
-
 'use strict';
 
-// ============================================
-// Utility Functions
-// ============================================
-
-/**
- * Debounce function to limit function calls
- * @param {Function} func - Function to debounce
- * @param {Number} wait - Wait time in milliseconds
- * @returns {Function} Debounced function
- */
 const debounce = (func, wait = 100) => {
   let timeout;
   return function executedFunction(...args) {
@@ -37,12 +12,6 @@ const debounce = (func, wait = 100) => {
   };
 };
 
-/**
- * Throttle function to limit function execution rate
- * @param {Function} func - Function to throttle
- * @param {Number} limit - Time limit in milliseconds
- * @returns {Function} Throttled function
- */
 const throttle = (func, limit = 100) => {
   let inThrottle;
   return function executedFunction(...args) {
@@ -54,12 +23,6 @@ const throttle = (func, limit = 100) => {
   };
 };
 
-/**
- * Check if element is in viewport
- * @param {Element} element - DOM element to check
- * @param {Number} threshold - Visibility threshold (0-1)
- * @returns {Boolean} True if element is visible
- */
 const isInViewport = (element, threshold = 0.1) => {
   const rect = element.getBoundingClientRect();
   const windowHeight = window.innerHeight || document.documentElement.clientHeight;
@@ -71,12 +34,6 @@ const isInViewport = (element, threshold = 0.1) => {
   return vertInView && horInView;
 };
 
-/**
- * Animate number counter
- * @param {Element} element - Target element
- * @param {Number} target - Target number
- * @param {Number} duration - Animation duration in ms
- */
 const animateCounter = (element, target, duration = 2000) => {
   const start = 0;
   const increment = target / (duration / 16); // 60fps
@@ -93,10 +50,6 @@ const animateCounter = (element, target, duration = 2000) => {
   }, 16);
 };
 
-// ============================================
-// Navigation
-// ============================================
-
 class Navigation {
   constructor() {
     this.nav = document.getElementById('mainNav');
@@ -108,7 +61,6 @@ class Navigation {
   }
 
   init() {
-    // Scroll effect on navigation
     window.addEventListener('scroll', throttle(() => {
       if (window.scrollY > 50) {
         this.nav.classList.add('scrolled');
@@ -117,17 +69,14 @@ class Navigation {
       }
     }, 100));
 
-    // Mobile menu toggle
     if (this.navToggle) {
       this.navToggle.addEventListener('click', () => this.toggleMenu());
     }
 
-    // Smooth scroll on navigation links
     this.navLinks.forEach(link => {
       link.addEventListener('click', (e) => this.handleLinkClick(e));
     });
 
-    // Close menu when clicking outside
     document.addEventListener('click', (e) => {
       if (this.navMenu.classList.contains('is-open')) {
         if (!this.nav.contains(e.target)) {
@@ -136,7 +85,6 @@ class Navigation {
       }
     });
 
-    // Close menu on ESC key
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && this.navMenu.classList.contains('is-open')) {
         this.closeMenu();
@@ -168,15 +116,10 @@ class Navigation {
         behavior: 'smooth'
       });
 
-      // Close mobile menu if open
       this.closeMenu();
     }
   }
 }
-
-// ============================================
-// Dark Mode Toggle
-// ============================================
 
 class DarkMode {
   constructor() {
@@ -188,13 +131,10 @@ class DarkMode {
   init() {
     if (!this.darkModeToggle) return;
 
-    // Toggle dark mode on click
     this.darkModeToggle.addEventListener('click', () => this.toggle());
 
-    // Optional: Listen for system preference changes
     if (window.matchMedia) {
       window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-        // Only auto-switch if user hasn't manually set a preference
         if (!localStorage.getItem('darkMode')) {
           this.setMode(e.matches);
         }
@@ -223,17 +163,12 @@ class DarkMode {
     } else if (savedMode === 'disabled') {
       this.setMode(false);
     } else {
-      // No saved preference, check system preference
       if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
         this.setMode(true);
       }
     }
   }
 }
-
-// ============================================
-// Scroll Animations
-// ============================================
 
 class ScrollAnimations {
   constructor() {
@@ -242,15 +177,12 @@ class ScrollAnimations {
   }
 
   init() {
-    // Initial check for elements already in viewport
     this.checkElements();
 
-    // Listen for scroll events
     window.addEventListener('scroll', throttle(() => {
       this.checkElements();
     }, 100));
 
-    // Also check on resize
     window.addEventListener('resize', debounce(() => {
       this.checkElements();
     }, 200));
@@ -264,10 +196,6 @@ class ScrollAnimations {
     });
   }
 }
-
-// ============================================
-// Experience Filter
-// ============================================
 
 class ExperienceFilter {
   constructor() {
@@ -296,7 +224,6 @@ class ExperienceFilter {
 
       if (filter === 'all') {
         item.classList.remove('is-hidden');
-        // Trigger reflow for animation
         setTimeout(() => {
           item.style.opacity = '1';
           item.style.transform = 'translateY(0)';
@@ -327,10 +254,6 @@ class ExperienceFilter {
   }
 }
 
-// ============================================
-// Skills Progress Animation
-// ============================================
-
 class SkillsProgress {
   constructor() {
     this.skillBars = document.querySelectorAll('.skill-item__progress');
@@ -343,7 +266,6 @@ class SkillsProgress {
       this.animateVisibleBars();
     }, 100));
 
-    // Initial check
     this.animateVisibleBars();
   }
 
@@ -359,10 +281,6 @@ class SkillsProgress {
   }
 }
 
-// ============================================
-// Stats Counter Animation
-// ============================================
-
 class StatsCounter {
   constructor() {
     this.statNumbers = document.querySelectorAll('[data-count]');
@@ -375,7 +293,6 @@ class StatsCounter {
       this.checkAndAnimate();
     }, 100));
 
-    // Initial check
     this.checkAndAnimate();
   }
 
@@ -397,10 +314,6 @@ class StatsCounter {
   }
 }
 
-// ============================================
-// Contact Form
-// ============================================
-
 class ContactForm {
   constructor() {
     this.form = document.getElementById('contactForm');
@@ -418,19 +331,15 @@ class ContactForm {
   }
 
   async handleSubmit() {
-    // Get form data
     const formData = new FormData(this.form);
     const data = Object.fromEntries(formData.entries());
 
-    // Basic validation
     if (!this.validateForm(data)) {
       this.showMessage('Please fill in all fields correctly.', 'error');
       return;
     }
 
     try {
-      // In a real application, you would send this to a server
-      // For now, we'll simulate a successful submission
       await this.simulateFormSubmission(data);
 
       this.showMessage('Thank you for your message! I\'ll get back to you soon.', 'success');
@@ -441,12 +350,10 @@ class ContactForm {
   }
 
   validateForm(data) {
-    // Check if all fields are filled
     if (!data.name || !data.email || !data.subject || !data.message) {
       return false;
     }
 
-    // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(data.email)) {
       return false;
@@ -456,7 +363,6 @@ class ContactForm {
   }
 
   simulateFormSubmission(data) {
-    // Simulate API call
     return new Promise((resolve) => {
       console.log('Form data:', data);
       setTimeout(resolve, 1000);
@@ -467,7 +373,6 @@ class ContactForm {
     this.messageDiv.textContent = message;
     this.messageDiv.className = `form-message ${type}`;
 
-    // Auto-hide after 5 seconds
     setTimeout(() => {
       this.messageDiv.style.opacity = '0';
       setTimeout(() => {
@@ -478,10 +383,6 @@ class ContactForm {
   }
 }
 
-// ============================================
-// Back to Top Button
-// ============================================
-
 class BackToTop {
   constructor() {
     this.button = document.getElementById('backToTop');
@@ -491,7 +392,6 @@ class BackToTop {
   init() {
     if (!this.button) return;
 
-    // Show/hide button based on scroll position
     window.addEventListener('scroll', throttle(() => {
       if (window.scrollY > 500) {
         this.button.classList.add('is-visible');
@@ -500,7 +400,6 @@ class BackToTop {
       }
     }, 100));
 
-    // Scroll to top on click
     this.button.addEventListener('click', () => {
       window.scrollTo({
         top: 0,
@@ -510,13 +409,6 @@ class BackToTop {
   }
 }
 
-// ============================================
-// Performance Optimizations
-// ============================================
-
-/**
- * Lazy load images when they come into viewport
- */
 class LazyLoader {
   constructor() {
     this.images = document.querySelectorAll('img[data-src]');
@@ -537,7 +429,6 @@ class LazyLoader {
 
       this.images.forEach(img => this.observer.observe(img));
     } else {
-      // Fallback for browsers without IntersectionObserver
       this.images.forEach(img => this.loadImage(img));
     }
   }
@@ -555,25 +446,19 @@ class LazyLoader {
   }
 }
 
-// ============================================
-// Stat Sources - Different Behavior for Mobile/Desktop
-// ============================================
-
 class StatSources {
   constructor() {
-    // Get all expandable stat cards
     this.expandableCards = document.querySelectorAll('.stat-card--expandable');
     this.expandBtns = document.querySelectorAll('.stat-card__expand-btn');
     this.expandDetails = document.querySelectorAll('.stat-card__details');
     this.isExpanded = false;
     this.mobileBreakpoint = 768;
-    this.wasMobile = this.isMobile(); // Track previous state
+    this.wasMobile = this.isMobile();
     this.init();
   }
 
   init() {
     this.setupExpandables();
-    // Listen for window resize to potentially reset state
     window.addEventListener('resize', debounce(() => {
       this.handleResize();
     }, 200));
@@ -582,13 +467,10 @@ class StatSources {
   handleResize() {
     const isMobileNow = this.isMobile();
 
-    // Only reset if we actually switched between mobile and desktop
     if (this.wasMobile !== isMobileNow) {
-      // Reset desktop state
       this.isExpanded = false;
       this.closeAllExpandables();
 
-      // Update the previous state
       this.wasMobile = isMobileNow;
     }
   }
@@ -597,21 +479,16 @@ class StatSources {
     return window.innerWidth <= this.mobileBreakpoint;
   }
 
-  // Setup all expandable stat cards
   setupExpandables() {
     this.expandBtns.forEach((btn, index) => {
-      // Click event
       btn.addEventListener('click', () => {
         if (this.isMobile()) {
-          // Mobile: toggle only this card
           this.toggleSingleExpandable(index);
         } else {
-          // Desktop: toggle all cards
           this.toggleAllExpandables();
         }
       });
 
-      // Keyboard interaction
       btn.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
@@ -630,7 +507,6 @@ class StatSources {
     const details = this.expandDetails[index];
     const isExpanded = details.classList.contains('is-expanded');
 
-    // Toggle this specific card
     btn.setAttribute('aria-expanded', !isExpanded);
     if (isExpanded) {
       details.classList.remove('is-expanded');
@@ -642,12 +518,10 @@ class StatSources {
   toggleAllExpandables() {
     this.isExpanded = !this.isExpanded;
 
-    // Update all buttons
     this.expandBtns.forEach(btn => {
       btn.setAttribute('aria-expanded', this.isExpanded);
     });
 
-    // Update all details sections
     this.expandDetails.forEach(details => {
       if (this.isExpanded) {
         details.classList.add('is-expanded');
@@ -658,21 +532,15 @@ class StatSources {
   }
 
   closeAllExpandables() {
-    // Update all buttons
     this.expandBtns.forEach(btn => {
       btn.setAttribute('aria-expanded', false);
     });
 
-    // Update all details sections
     this.expandDetails.forEach(details => {
       details.classList.remove('is-expanded');
     });
   }
 }
-
-// ============================================
-// Accessibility Enhancements
-// ============================================
 
 class AccessibilityEnhancements {
   constructor() {
@@ -680,15 +548,12 @@ class AccessibilityEnhancements {
   }
 
   init() {
-    // Add keyboard navigation for custom interactive elements
     this.setupKeyboardNavigation();
 
-    // Announce dynamic content changes to screen readers
     this.setupLiveRegions();
   }
 
   setupKeyboardNavigation() {
-    // Allow Enter key to activate buttons
     const customButtons = document.querySelectorAll('[role="button"]:not(button)');
     customButtons.forEach(element => {
       element.addEventListener('keydown', (e) => {
@@ -701,31 +566,20 @@ class AccessibilityEnhancements {
   }
 
   setupLiveRegions() {
-    // Ensure ARIA live regions are properly announced
     const liveRegions = document.querySelectorAll('[aria-live]');
     liveRegions.forEach(region => {
-      // Force screen readers to recognize changes
       region.setAttribute('aria-atomic', 'true');
     });
   }
 }
 
-// ============================================
-// Smooth Scroll for All Anchor Links
-// ============================================
-
-/**
- * Handle smooth scrolling for all anchor links (like hero CTA buttons)
- */
 function setupSmoothScrolling() {
-  // Get all anchor links that point to sections on the page
   const anchorLinks = document.querySelectorAll('a[href^="#"]:not(.nav__link)');
 
   anchorLinks.forEach(link => {
     link.addEventListener('click', (e) => {
       const targetId = link.getAttribute('href');
 
-      // Skip if it's just "#" with no target
       if (targetId === '#' || targetId === '#!') return;
 
       const targetSection = document.querySelector(targetId);
@@ -735,7 +589,6 @@ function setupSmoothScrolling() {
 
         const nav = document.getElementById('mainNav');
         const navHeight = nav ? nav.offsetHeight : 0;
-        // Add extra offset on mobile to prevent navbar from covering content
         const isMobile = window.innerWidth <= 768;
         const extraOffset = isMobile ? 20 : 0;
         const targetPosition = targetSection.offsetTop - navHeight - extraOffset;
@@ -749,10 +602,6 @@ function setupSmoothScrolling() {
   });
 }
 
-// ============================================
-// Project Modal
-// ============================================
-
 class ProjectModal {
   constructor() {
     this.modal = document.getElementById('projectModal');
@@ -761,7 +610,6 @@ class ProjectModal {
     this.closeButtons = this.modal?.querySelectorAll('[data-modal-close]');
     this.clickableProjects = document.querySelectorAll('.timeline__item--clickable[data-project]');
 
-    // Modal content elements
     this.modalLogo = document.getElementById('modalLogo');
     this.modalTitle = document.getElementById('modalTitle');
     this.modalSubtitle = document.getElementById('modalSubtitle');
@@ -773,10 +621,8 @@ class ProjectModal {
     this.modalCTATop = document.getElementById('modalCTATop');
     this.modalCTATextTop = document.getElementById('modalCTATextTop');
 
-    // Detect language from HTML lang attribute
     this.currentLanguage = document.documentElement.lang || 'en';
 
-    // Project data
     this.projectData = {
       'language-space': {
         en: {
@@ -860,17 +706,14 @@ class ProjectModal {
   init() {
     if (!this.modal) return;
 
-    // Add click listeners to clickable project cards
     this.clickableProjects.forEach(card => {
       card.addEventListener('click', (e) => {
-        // Prevent opening modal if clicking on links inside the card
         if (e.target.tagName === 'A' || e.target.closest('a')) return;
 
         const projectId = card.dataset.project;
         this.openModal(projectId);
       });
 
-      // Add keyboard support
       card.setAttribute('tabindex', '0');
       card.setAttribute('role', 'button');
       card.addEventListener('keydown', (e) => {
@@ -882,26 +725,22 @@ class ProjectModal {
       });
     });
 
-    // Close button listeners
     this.closeButtons.forEach(button => {
       button.addEventListener('click', () => this.closeModal());
     });
 
-    // Close on ESC key
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && this.modal.classList.contains('is-open')) {
         this.closeModal();
       }
     });
 
-    // Close when clicking outside modal content
     this.modal.addEventListener('click', (e) => {
       if (e.target === this.modal || e.target === this.modalOverlay) {
         this.closeModal();
       }
     });
 
-    // Prevent closing when clicking inside modal content
     this.modalContainer.addEventListener('click', (e) => {
       e.stopPropagation();
     });
@@ -911,17 +750,14 @@ class ProjectModal {
     const projectLangData = this.projectData[projectId];
     if (!projectLangData) return;
 
-    // Get language-specific data
     const project = projectLangData[this.currentLanguage] || projectLangData['en'];
 
-    // Populate modal content
     this.modalLogo.src = project.logo;
     this.modalLogo.alt = `${project.title} Logo`;
     this.modalTitle.textContent = project.title;
     this.modalSubtitle.textContent = project.subtitle;
     this.modalDescription.textContent = project.description;
 
-    // Populate highlights
     this.modalHighlights.innerHTML = '';
     project.highlights.forEach(highlight => {
       const li = document.createElement('li');
@@ -929,7 +765,6 @@ class ProjectModal {
       this.modalHighlights.appendChild(li);
     });
 
-    // Populate stats
     this.modalStats.innerHTML = '';
     project.stats.forEach(stat => {
       const statDiv = document.createElement('div');
@@ -941,29 +776,23 @@ class ProjectModal {
       this.modalStats.appendChild(statDiv);
     });
 
-    // Set CTA buttons (both top and bottom)
     this.modalCTAText.textContent = project.ctaText;
     this.modalCTA.href = project.ctaUrl;
     this.modalCTATextTop.textContent = project.ctaText;
     this.modalCTATop.href = project.ctaUrl;
 
-    // Lock body scroll - simple approach
     document.body.classList.add('modal-open');
 
-    // Show modal
     this.modal.classList.add('is-open');
     this.modal.setAttribute('aria-hidden', 'false');
 
-    // Reset scroll position of modal
     this.modalContainer.scrollTop = 0;
 
-    // Focus management for accessibility
     setTimeout(() => {
       const closeButton = this.modal.querySelector('.project-modal__close');
       if (closeButton) closeButton.focus();
     }, 100);
 
-    // Trap focus within modal
     this.trapFocus();
   }
 
@@ -971,10 +800,8 @@ class ProjectModal {
     this.modal.classList.remove('is-open');
     this.modal.setAttribute('aria-hidden', 'true');
 
-    // Unlock body scroll - simple approach
     document.body.classList.remove('modal-open');
 
-    // Return focus to the card that opened the modal
     const openCard = document.querySelector('.timeline__item--clickable[data-project]:focus');
     if (openCard) {
       openCard.focus();
@@ -997,13 +824,11 @@ class ProjectModal {
 
       if (e.key === 'Tab') {
         if (e.shiftKey) {
-          // Shift + Tab
           if (document.activeElement === firstElement) {
             e.preventDefault();
             lastElement.focus();
           }
         } else {
-          // Tab
           if (document.activeElement === lastElement) {
             e.preventDefault();
             firstElement.focus();
@@ -1016,13 +841,7 @@ class ProjectModal {
   }
 }
 
-// ============================================
-// Initialize Everything
-// ============================================
-
-// Wait for DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', () => {
-  // Initialize all components
   new Navigation();
   new DarkMode();
   new ScrollAnimations();
@@ -1036,39 +855,27 @@ document.addEventListener('DOMContentLoaded', () => {
   new AccessibilityEnhancements();
   new ProjectModal();
 
-  // Setup smooth scrolling for all anchor links (hero buttons, etc.)
   setupSmoothScrolling();
 
-  // Add loaded class to body for CSS hooks
   document.body.classList.add('loaded');
 
-  // Log initialization (remove in production)
   console.log('%c Portfolio Initialized Successfully! ',
     'background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 8px 16px; border-radius: 4px; font-weight: bold;');
 });
 
-// Handle page visibility changes for performance
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) {
-    // Page is hidden, pause animations if needed
     console.log('Page hidden - pausing non-critical animations');
   } else {
-    // Page is visible, resume animations
     console.log('Page visible - resuming animations');
   }
 });
 
-// Service Worker registration (optional - for PWA capabilities)
 if ('serviceWorker' in navigator && location.protocol === 'https:') {
   window.addEventListener('load', () => {
-    // Uncomment to register a service worker
-    // navigator.serviceWorker.register('/sw.js')
-    //   .then(reg => console.log('Service Worker registered', reg))
-    //   .catch(err => console.log('Service Worker registration failed', err));
   });
 }
 
-// Export for potential module usage
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     Navigation,
